@@ -1,13 +1,16 @@
 #include "Max_BW_Path_without_heap.hpp"
 
-Max_BW_Path_without_heap::Max_BW_Path_without_heap(vector<vector<int> > g)
+Max_BW_Path_without_heap::Max_BW_Path_without_heap(vector<vector<pair<int, int> > > g)
 {
     graph=g;
 }
 
-void Max_BW_Path_without_heap::modified_dijkstra_without_heap(int s, int t)
+vector<int> Max_BW_Path_without_heap::modified_dijkstra_without_heap(int s, int t, bool verbose)
 {
-    vector<int> status(graph.size()), weights(graph.size()), dad(graph.size()), fringe;
+    if (verbose)
+        cout << "In modified_dijkstra_without_heap" << endl;
+
+    vector<int> status(graph.size()), weights(graph.size(), 0), dad(graph.size()), fringe;
     for(int i=0; i<graph.size(); i++)
     {
         // status=-1 indicates unseen
@@ -18,45 +21,47 @@ void Max_BW_Path_without_heap::modified_dijkstra_without_heap(int s, int t)
     dad[s]=-1;
     for(int i=0; i<graph[s].size(); i++)
     {
-        // status=1 indicates fringe
+        // status=0 indicates fringe
         status[graph[s][i].first]=0;
         weights[graph[s][i].first]=graph[s][i].second;
         fringe.push_back(graph[s][i].first);
         dad[graph[s][i].first]=s;
     }
-    while(!fringe.empty())
+    while(status[t]!=1)
     {
-        int pos=-1, max_weight=INT_MIN;
+        int pos=-1, pos_idx=-1, max_weight=INT_MIN;
         for(int i=0; i<fringe.size(); i++)
         {
             if(max_weight<weights[fringe[i]])
             {
                 max_weight=weights[fringe[i]];
-                pos=i;
+                pos=fringe[i];
+                pos_idx=i;
             }
         }
         status[pos]=1;
-        fringe.erase(fringe.begin()+pos);
+        fringe.erase(fringe.begin()+pos_idx);
         for(int i=0; i<graph[pos].size(); i++)
         {
             if(status[graph[pos][i].first]==-1)
             {
                 status[graph[pos][i].first]=0;
                 dad[graph[pos][i].first]=pos;
-                weights[graph[pos][i].first]=min(weights[pos], graph[graph[pos][i].second]);
+                weights[graph[pos][i].first]=min(weights[pos], graph[pos][i].second);
                 fringe.push_back(graph[pos][i].first);
             }
-            else if(status[graph[pos][i].first]==0 && weights[graph[pos][i].first]<min(weights[pos], graph[graph[pos][i].second]))
+            else if(status[graph[pos][i].first]==0 && weights[graph[pos][i].first]<min(weights[pos], graph[pos][i].second))
             {
                 dad[graph[pos][i].first]=pos;
-                weights[graph[pos][i].first]=min(weights[pos], graph[graph[pos][i].second]);
+                weights[graph[pos][i].first]=min(weights[pos], graph[pos][i].second);
             }
         }
     }
-    return reconstruct_max_bw_path(t, dad);
+    cout<<weights[t]<<endl;
+    return reconstruct_max_bw_path_without_heap(t, dad);
 }
 
-vector<int> reconstruct_max_bw_path_without_heap(int t, vector<int> dad)
+vector<int> Max_BW_Path_without_heap::reconstruct_max_bw_path_without_heap(int t, vector<int> dad)
 {
     vector<int> path;
     int i=t;

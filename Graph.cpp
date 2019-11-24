@@ -11,13 +11,13 @@ Graph::Graph(int num_vertices)
 
 void Graph::make_connected()
 {
-	vector<int> A(5000, 0);
-	for(int i=0; i<5000; i++)
+	vector<int> A(num_of_vertices, 0);
+	for(int i=0; i<num_of_vertices; i++)
 	{
 		A[i]=i+1;
 	}
 	random_shuffle(A.begin(), A.end());
-	for(int i=0; i<5000; i++)
+	for(int i=0; i<num_of_vertices; i++)
 	{
 		int w=rand()%100+1;
 		if(i==0)
@@ -78,11 +78,11 @@ void Graph::remaining_edges(int num_of_remaining_edges)
 vector<vector<pair<int, int>> > Graph::create_graph(int avg_degree)
 {
 	make_connected();
-
+    cout<<11<<endl;
     num_of_edges=(avg_degree*num_of_vertices)/2;
-
-    remaining_edges(num_of_edges - num_of_vertices, num_of_vertices);
-
+    cout<<12<<endl;
+    remaining_edges(num_of_edges - num_of_vertices);
+    cout<<13<<endl;
 	return graph;
 }
 

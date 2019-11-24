@@ -1,6 +1,6 @@
 #include "Kruskal.hpp"
 
-Kruskal::Kruskal(vector<vector<int> > g)
+Kruskal::Kruskal(vector<vector<pair<int, int> > > g)
 {
     rnk.resize(g.size());
     parent.resize(g.size());
@@ -10,7 +10,7 @@ Kruskal::Kruskal(vector<vector<int> > g)
     curr_heap_size=-1;
 }
 
-static bool Kruskal::cmp(vector<int> A, vector<int> B)
+bool Kruskal::cmp(vector<int> A, vector<int> B)
 {
     return A[0]>B[0];
 }
@@ -19,7 +19,7 @@ vector<int> Kruskal::maximum()
 {
     if(curr_heap_size==-1)
     {
-        return INT_MAX;
+        return {INT_MAX};
     }
     return heap[0];
 }
@@ -54,7 +54,7 @@ void Kruskal::delete_key(int i)
     heap[i][1]=heap[curr_heap_size][1];
     heap[i][2]=heap[curr_heap_size][2];
     curr_heap_size--;
-    while(i>=1 && heap[(i-1)/2]][0]<heap[i][0])
+    while(i>=1 && heap[(i-1)/2][0]<heap[i][0])
     {
         swap(heap[(i-1)/2][0], heap[i][0]);
         swap(heap[(i-1)/2][1], heap[i][1]);
@@ -86,7 +86,7 @@ void Kruskal::create_weights_set()
     {
         for(int j=0; j<graph[i].size(); j++)
         {
-            heap.insert_key(graph[i][j].second, i, graph[i][j].first);
+            insert_key(graph[i][j].second, i, graph[i][j].first);
         }
     }
 }
@@ -156,11 +156,10 @@ vector<int> Kruskal::make_mst(int s, int t)
             merge_vertices_to_a_set(r1, r2);
         }
     }
-
     return reconstruct_kruskal_with_heap(t, dad);
 }
 
-vector<int> reconstruct_kruskal_with_heap(int t, vector<int> dad)
+vector<int> Kruskal::reconstruct_kruskal_with_heap(int t, vector<int> dad)
 {
     vector<int> path;
     int i=t;

@@ -5,8 +5,8 @@ Heap::Heap(int heap_size)
     //ctor
     max_heap_size=heap_size;
     heap.resize(max_heap_size);
-    weights.resize(max_heap_size, INT_MAX);
-    map_vertex_to_heapidx.resize(max_heap_size);
+    weights.resize(max_heap_size, 0);
+    map_vertex_to_heapidx.resize(max_heap_size, -1);
     curr_heap_size=-1;
 }
 
@@ -26,12 +26,12 @@ int Heap::maximum()
 
 void Heap::insert_key(int value)
 {
-    if(curr_heap_size==max_heap_size)
+    if(curr_heap_size==max_heap_size-1)
     {
         return;
     }
     heap[++curr_heap_size]=value;
-    map_vertex_to_heapidx[value]=curr_heap_size-1;
+    map_vertex_to_heapidx[value]=curr_heap_size;
     int i=curr_heap_size;
     while(i>=1 && weights[heap[(i-1)/2]]<weights[heap[i]])
     {
@@ -42,14 +42,15 @@ void Heap::insert_key(int value)
     }
 }
 
-void Heap::delete_key(int i)
+void Heap::delete_key(int del_vertex)
 {
-    map_vertex_to_heapidx[heap[i]]=-1;
     if(curr_heap_size==-1)
     {
         return;
     }
-    map_vertex_to_heapidx[heap[curr_heap_size-1]]=i;
+    int i=map_vertex_to_heapidx[del_vertex];
+    map_vertex_to_heapidx[del_vertex]=-1;
+    map_vertex_to_heapidx[heap[curr_heap_size]]=i;
     heap[i]=heap[curr_heap_size--];
     while(i>=1 && weights[heap[(i-1)/2]]<weights[heap[i]])
     {
