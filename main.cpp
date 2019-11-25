@@ -14,6 +14,14 @@ int main()
 	Graph* g=new Graph(num_of_vertices);
 	vector<vector<pair<int, int> > > graph=g->create_graph(avg_degree);
 	vector<vector<int> > edges=g->edges;
+	/*Heap* h=new Heap(500);
+	for(int i=0; i<500; i++)
+    {
+        h->update_weights(i, 2*i);
+        h->insert_key(2*i);
+    }
+    cout<<h->maximum()<<endl;
+    h->fix_heap(2);/*
 	/*cout<<endl;
 	for(int i=0; i<edges.size(); i++)
     {
@@ -30,9 +38,8 @@ int main()
 		}
 		//cnt+=graph[i].size();
 	}*/
-    //Heap* h=new Heap(num_of_vertices);
     //Max_BW_Path_without_heap* mbw=new Max_BW_Path_without_heap(graph);
-    Kruskal* kr=new Kruskal(graph, num_of_vertices, avg_degree, edges);
+    //Kruskal* kr=new Kruskal(graph, num_of_vertices, avg_degree, edges);
     /*for(int i=0; i<5; i++)
     {
         int source=rand()%num_of_vertices;
@@ -50,7 +57,23 @@ int main()
         }
         cout<<endl;
     }*/
+    Max_BW_Path_without_heap* mbw=new Max_BW_Path_without_heap(graph);
+    vector<int> path1=mbw->modified_dijkstra_without_heap(3, 7);
+    for(int j=0; j<path1.size(); j++)
+    {
+        cout<<path1[j]<<" ";
+    }
+    cout<<endl;
+    Max_BW_Path_with_heap* mbw1=new Max_BW_Path_with_heap(graph);
+    vector<int> path2=mbw1->modified_dijkstra_with_heap(3, 7);
+    for(int j=0; j<path2.size(); j++)
+    {
+        cout<<path2[j]<<" ";
+    }
+    cout<<endl;
+    Kruskal* kr=new Kruskal(graph, num_of_vertices, avg_degree, edges);
     vector<int> path=kr->make_mst(3, 7);
+    cout<<endl;
     for(int j=0; j<path.size(); j++)
     {
         cout<<path[j]<<" ";

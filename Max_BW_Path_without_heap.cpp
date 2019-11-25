@@ -5,11 +5,8 @@ Max_BW_Path_without_heap::Max_BW_Path_without_heap(vector<vector<pair<int, int> 
     graph=g;
 }
 
-vector<int> Max_BW_Path_without_heap::modified_dijkstra_without_heap(int s, int t, bool verbose)
+vector<int> Max_BW_Path_without_heap::modified_dijkstra_without_heap(int s, int t)
 {
-    if (verbose)
-        cout << "In modified_dijkstra_without_heap" << endl;
-
     vector<int> status(graph.size()), weights(graph.size(), 0), dad(graph.size()), fringe;
     for(int i=0; i<graph.size(); i++)
     {

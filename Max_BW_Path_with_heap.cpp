@@ -29,6 +29,7 @@ vector<int> Max_BW_Path_with_heap::modified_dijkstra_with_heap(int s, int t)
     while(status[t]!=1)
     {
         int pos=heap->maximum();
+        //cout<<pos<<" ";
         heap->delete_key(pos);
         status[pos]=1;
         for(int i=0; i<graph[pos].size(); i++)
@@ -38,13 +39,14 @@ vector<int> Max_BW_Path_with_heap::modified_dijkstra_with_heap(int s, int t)
                 status[graph[pos][i].first]=0;
                 dad[graph[pos][i].first]=pos;
                 weights[graph[pos][i].first]=min(weights[pos], graph[pos][i].second);
-                heap->update_weights(graph[pos][i].second, graph[pos][i].first);
+                heap->update_weights(min(weights[pos], graph[pos][i].second), graph[pos][i].first);
                 heap->insert_key(graph[pos][i].first);
             }
             else if(status[graph[pos][i].first]==0 && weights[graph[pos][i].first]<min(weights[pos], graph[pos][i].second))
             {
                 dad[graph[pos][i].first]=pos;
                 weights[graph[pos][i].first]=min(weights[pos], graph[pos][i].second);
+                heap->update_weights(min(weights[pos], graph[pos][i].second), graph[pos][i].first);
                 heap->fix_heap(graph[pos][i].first);
             }
         }

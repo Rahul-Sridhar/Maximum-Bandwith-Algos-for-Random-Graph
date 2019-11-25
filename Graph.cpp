@@ -21,44 +21,31 @@ void Graph::make_connected()
 	for(int i=0; i<num_of_vertices; i++)
 	{
 		int w=rand()%100+1;
-		if(i==0)
+		if(i==graph.size()-1)
 		{
 			vector<int> entry_edges;
-			cout<<w<<" ";
-			entry_edges.push_back(w);
-			entry_edges.push_back(i);
-			entry_edges.push_back(i+1);
-			edges.push_back(entry_edges);
-			graph[i].push_back(make_pair(i+1, w));
-			graph[i].push_back(make_pair(graph.size()-1, w));
-			uset.insert(i*10000+(i+1));
-			uset.insert(i*10000+(graph.size()-1));
-		}
-		else if(i==graph.size()-1)
-		{
-			vector<int> entry_edges;
-			cout<<w<<" ";
+			//cout<<w<<" ";
 			entry_edges.push_back(w);
 			entry_edges.push_back(i);
 			entry_edges.push_back(0);
 			edges.push_back(entry_edges);
-			graph[i].push_back(make_pair(i-1, w));
 			graph[i].push_back(make_pair(0, w));
-			uset.insert(i*10000+(i-1));
-			uset.insert(i*10000+0);
+			graph[0].push_back(make_pair(i, w));
+			uset.insert(i*10000+(0));
+			uset.insert(0*10000+i);
 		}
 		else
 		{
 			vector<int> entry_edges;
-			cout<<w<<" ";
+			//cout<<w<<" ";
 			entry_edges.push_back(w);
 			entry_edges.push_back(i);
 			entry_edges.push_back(i+1);
 			edges.push_back(entry_edges);
-			graph[i].push_back(make_pair(i-1, w));
 			graph[i].push_back(make_pair(i+1, w));
-			uset.insert(i*10000+(i-1));
+			graph[i+1].push_back(make_pair(i, w));
 			uset.insert(i*10000+(i+1));
+			uset.insert((i+1)*10000+(i));
 		}
 
 	}
@@ -86,7 +73,7 @@ void Graph::remaining_edges(int num_of_remaining_edges)
         int w=rand()%100+1;
         //cout<<a<<" "<<b<<endl;
 		vector<int> entry_edges;
-        cout<<w<<" ";
+        //cout<<w<<" ";
         entry_edges.push_back(w);
         entry_edges.push_back(a);
         entry_edges.push_back(b);
