@@ -8,8 +8,7 @@ using namespace std;
 class Kruskal
 {
     public:
-        Kruskal(vector<vector<pair<int, int> > >);
-        static bool cmp(vector<int>, vector<int>);
+        Kruskal(vector<vector<pair<int, int> > >, int, int, vector<vector<int> >);
         vector<int> maximum();
         void insert_key(int, int, int);
         void delete_key(int);
@@ -18,12 +17,13 @@ class Kruskal
         int find_parent(int);
         void merge_vertices_to_a_set(int, int);
         vector<int> make_mst(int, int);
-        vector<int> reconstruct_kruskal_with_heap(int, vector<int>);
+        vector<int> dfs(int, int, unordered_map<int, vector<int>>, vector<int>, vector<int>&);
+        vector<int> reconstruct_kruskal_with_heap(int, int, unordered_map<int, vector<int>>);
 
     private:
-        int max_heap_size, curr_heap_size;
+        int max_heap_size, curr_heap_size, num_of_vertices, avg_degree;
         vector<int> rnk, parent;
-        vector<vector<int> > weights, heap;
+        vector<vector<int> > edges, heap;
         vector<vector<pair<int, int> > > graph;
 };
 

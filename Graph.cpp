@@ -17,11 +17,18 @@ void Graph::make_connected()
 		A[i]=i+1;
 	}
 	random_shuffle(A.begin(), A.end());
+	srand(time(0));
 	for(int i=0; i<num_of_vertices; i++)
 	{
 		int w=rand()%100+1;
 		if(i==0)
 		{
+			vector<int> entry_edges;
+			cout<<w<<" ";
+			entry_edges.push_back(w);
+			entry_edges.push_back(i);
+			entry_edges.push_back(i+1);
+			edges.push_back(entry_edges);
 			graph[i].push_back(make_pair(i+1, w));
 			graph[i].push_back(make_pair(graph.size()-1, w));
 			uset.insert(i*10000+(i+1));
@@ -29,6 +36,12 @@ void Graph::make_connected()
 		}
 		else if(i==graph.size()-1)
 		{
+			vector<int> entry_edges;
+			cout<<w<<" ";
+			entry_edges.push_back(w);
+			entry_edges.push_back(i);
+			entry_edges.push_back(0);
+			edges.push_back(entry_edges);
 			graph[i].push_back(make_pair(i-1, w));
 			graph[i].push_back(make_pair(0, w));
 			uset.insert(i*10000+(i-1));
@@ -36,6 +49,12 @@ void Graph::make_connected()
 		}
 		else
 		{
+			vector<int> entry_edges;
+			cout<<w<<" ";
+			entry_edges.push_back(w);
+			entry_edges.push_back(i);
+			entry_edges.push_back(i+1);
+			edges.push_back(entry_edges);
 			graph[i].push_back(make_pair(i-1, w));
 			graph[i].push_back(make_pair(i+1, w));
 			uset.insert(i*10000+(i-1));
@@ -66,6 +85,12 @@ void Graph::remaining_edges(int num_of_remaining_edges)
 		}
         int w=rand()%100+1;
         //cout<<a<<" "<<b<<endl;
+		vector<int> entry_edges;
+        cout<<w<<" ";
+        entry_edges.push_back(w);
+        entry_edges.push_back(a);
+        entry_edges.push_back(b);
+        edges.push_back(entry_edges);
 		graph[a].push_back(make_pair(b, w));
 	    uset.insert(a*10000+b);
 	    graph[b].push_back(make_pair(a, w));
@@ -78,11 +103,8 @@ void Graph::remaining_edges(int num_of_remaining_edges)
 vector<vector<pair<int, int>> > Graph::create_graph(int avg_degree)
 {
 	make_connected();
-    cout<<11<<endl;
     num_of_edges=(avg_degree*num_of_vertices)/2;
-    cout<<12<<endl;
     remaining_edges(num_of_edges - num_of_vertices);
-    cout<<13<<endl;
 	return graph;
 }
 
