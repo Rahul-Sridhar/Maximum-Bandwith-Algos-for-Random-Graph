@@ -96,7 +96,6 @@ void Kruskal::makeset(int vertex)
 {
     rnk[vertex]=0;
     parent[vertex]=vertex;
-    //cout<<"makset "<<vertex<<" "<<parent[vertex]<<endl;
 }
 
 // Path compression
@@ -130,32 +129,20 @@ void Kruskal::merge_vertices_to_a_set(int x, int y)
 vector<int> Kruskal::make_mst(int s, int t)
 {
     int n=max_heap_size-1;
-    //vector<int> dad(graph.size());
     for(int i=0; i<num_of_vertices; i++)
     {
         makeset(i);
     }
     create_weights_set();
-    //dad[s]=-1;
     unordered_map<int, vector<int>> umap;
-    //cout<<endl;
     for(int i=0; i<=n; i++)
     {
         vector<int> curr_edge=maximum();
-        //cout<<curr_edge[0]<<" ";
         delete_key(0);
         int u=curr_edge[1], v=curr_edge[2];
         int r1=find_parent(u), r2=find_parent(v);
-        //cout<<"check"<<endl;
-        //cout<<u<<" "<<v<<" "<<r1<<" "<<r2<<endl;
         if(r1!=r2)
         {
-            /*if(v!=s)
-            {
-                dad[v]=u;
-            }*/
-            //cout<<"i am here"<<endl;
-            //cout<<"("<<u<<")"<<"("<<v<<")"<<curr_edge[0]<<"("<<curr_edge[1]<<")"<<"("<<curr_edge[2]<<")"<<" ";
             umap[u].push_back(v);
             umap[v].push_back(u);
             merge_vertices_to_a_set(r1, r2);
@@ -168,73 +155,24 @@ vector<int> Kruskal::make_mst(int s, int t)
 vector<int> Kruskal::reconstruct_kruskal_with_heap(int s, int t, unordered_map<int, vector<int>> umap)
 {
     vector<int> path;
-    /*int i=t;
-    path.push_back(t);
-    while(dad[i]!=-1)
-    {
-        path.push_back(dad[i]);
-        i=dad[i];
-    }
-    reverse(path.begin(), path.end());*/
-    /*for(auto it:umap)
-    {
-        cout<<it.first<<" -> ";
-        for(int i=0; i<it.second.size(); i++)
-        {
-            cout<<it.second[i]<<" ";
-        }
-        cout<<endl;
-    }
-    cout<<"***"<<s<<" "<<t<<endl;
-    cout<<"cool"<<endl;*/
     path.push_back(s);
-    //int curr_vertex=s;
-
     vector<int> visited(num_of_vertices, -1);
     visited[s]=1;
-    vector<int> ans1=dfs(s, t, umap, path, visited);
+    path=dfs(s, t, umap, path, visited);
     int value=INT_MAX;
-    /*for(int i=0; i<graph.size(); i++)
+    for(int i=0; i<path.size()-1; i++)
     {
-        cout << i << ": ";
-        for(int j=0; j<graph[i].size(); j++)
+        int u=path[i], v=path[i+1];
+        for(int j=0; j<graph[u].size(); j++)
         {
-            cout<<"("<<graph[i][j].first<<")"<<graph[i][j].second<<" ";
-        }
-        cout<<endl;
-    }
-    cout<<endl;*/
-    for(int i=0; i<ans1.size()-1; i++)
-    {
-        int a=ans1[i], b=ans1[i+1];
-        for(int j=0; j<graph[a].size(); j++)
-        {
-            if(graph[a][j].first==b)
+            if(graph[u][j].first==v)
             {
-                value=min(value, graph[a][j].second);
+                value=min(value, graph[u][j].second);
                 break;
             }
         }
     }
     cout<<value<<endl;
-    return ans1;
-    /*while(true)
-    {
-        for(int i=0; i<umap[curr_vertex].size(); i++)
-        {
-            if(visited.find(umap[curr_vertex][i])==visited.end())
-            {
-                visited.insert(umap[curr_vertex][i]);
-                path.push_back(umap[curr_vertex][i]);
-                curr_vertex=umap[curr_vertex][i];
-                break;
-            }
-        }
-        if(curr_vertex==t)
-        {
-            break;
-        }
-    }*/
     return path;
 }
 
@@ -248,13 +186,11 @@ vector<int> Kruskal::dfs(int vertex, int t, unordered_map<int, vector<int>> umap
     {
         if(visited[umap[vertex][i]]!=1)
         {
-           //cout<<umap[vertex][i]<<endl;
            ans.push_back(umap[vertex][i]);
            visited[umap[vertex][i]]=1;
            vector<int> soln=dfs(umap[vertex][i], t, umap, ans, visited);
            if(visited[t]==1)
            {
-               //ans.push_back(umap[vertex][i]);
                return soln;
            }
            ans.pop_back();

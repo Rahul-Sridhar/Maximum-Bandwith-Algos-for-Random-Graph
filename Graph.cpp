@@ -24,7 +24,6 @@ void Graph::make_connected()
 		if(i==graph.size()-1)
 		{
 			vector<int> entry_edges;
-			//cout<<w<<" ";
 			entry_edges.push_back(w);
 			entry_edges.push_back(i);
 			entry_edges.push_back(0);
@@ -37,7 +36,6 @@ void Graph::make_connected()
 		else
 		{
 			vector<int> entry_edges;
-			//cout<<w<<" ";
 			entry_edges.push_back(w);
 			entry_edges.push_back(i);
 			entry_edges.push_back(i+1);
@@ -51,15 +49,12 @@ void Graph::make_connected()
 	}
 }
 
-void Graph::remaining_edges(int num_of_remaining_edges)
+void Graph::remaining_edges_sparse(int num_of_remaining_edges)
 {
 	int i=0;
 	srand(time(0));
-	int count = 0;
 	while(i < num_of_remaining_edges)
 	{
-	    count++;
-	    //cout << count << ":" << i << endl;
 	    int a = rand()%num_of_vertices;
 	    int b = rand()%num_of_vertices;
 	    if(uset.find(a*10000+b)!=uset.end())
@@ -71,9 +66,7 @@ void Graph::remaining_edges(int num_of_remaining_edges)
 			continue;
 		}
         int w=rand()%100+1;
-        //cout<<a<<" "<<b<<endl;
-		vector<int> entry_edges;
-        //cout<<w<<" ";
+        vector<int> entry_edges;
         entry_edges.push_back(w);
         entry_edges.push_back(a);
         entry_edges.push_back(b);
@@ -83,15 +76,51 @@ void Graph::remaining_edges(int num_of_remaining_edges)
 	    graph[b].push_back(make_pair(a, w));
 	    uset.insert(b*10000+a);
 	    i++;
-	    //cout<<i<<endl;
 	}
 }
 
-vector<vector<pair<int, int>> > Graph::create_graph(int avg_degree)
+void Graph::remaining_edges_dense(int num_of_remaining_edges)
+{
+    srand(time(0));
+    for(int i=0; i<num_of_vertices; i++)
+    {
+        for(int j=i+1; j<num_of_vertices; j++)
+        {
+            if(((double) rand() / (RAND_MAX))>0.2)
+            {
+                continue;
+            }
+            if(uset.find(i*10000+j)!=uset.end())
+            {
+                continue;
+            }
+            int w=rand()%100+1;
+            vector<int> entry_edges;
+            entry_edges.push_back(w);
+            entry_edges.push_back(i);
+            entry_edges.push_back(j);
+            edges.push_back(entry_edges);
+            graph[i].push_back(make_pair(j, w));
+            uset.insert(i*10000+j);
+            graph[j].push_back(make_pair(i, w));
+            uset.insert(j*10000+i);
+        }
+    }
+}
+
+vector<vector<pair<int, int>> > Graph::create_sparse_graph(int avg_degree)
 {
 	make_connected();
     num_of_edges=(avg_degree*num_of_vertices)/2;
-    remaining_edges(num_of_edges - num_of_vertices);
+    remaining_edges_sparse(num_of_edges - num_of_vertices);
+	return graph;
+}
+
+vector<vector<pair<int, int>> > Graph::create_dense_graph(int avg_degree)
+{
+	make_connected();
+    num_of_edges=(avg_degree*num_of_vertices)/2;
+    remaining_edges_dense(num_of_edges - num_of_vertices);
 	return graph;
 }
 

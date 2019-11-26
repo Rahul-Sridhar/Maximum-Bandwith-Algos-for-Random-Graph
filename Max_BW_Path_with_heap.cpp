@@ -29,7 +29,6 @@ vector<int> Max_BW_Path_with_heap::modified_dijkstra_with_heap(int s, int t)
     while(status[t]!=1)
     {
         int pos=heap->maximum();
-        //cout<<pos<<" ";
         heap->delete_key(pos);
         status[pos]=1;
         for(int i=0; i<graph[pos].size(); i++)
