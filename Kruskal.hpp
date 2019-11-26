@@ -17,8 +17,8 @@ class Kruskal
         int find_parent(int);
         void merge_vertices_to_a_set(int, int);
         vector<int> make_mst(int, int);
-        vector<int> dfs(int, int, unordered_map<int, vector<int>>, vector<int>, vector<int>&);
-        vector<int> reconstruct_kruskal_with_heap(int, int, unordered_map<int, vector<int>>);
+        vector<int> dfs(int, int, unordered_map<int, vector<int> >, vector<int>, vector<int>&);
+        vector<int> reconstruct_kruskal_with_heap(int, int, unordered_map<int, vector<int> >);
 
     private:
         int max_heap_size, curr_heap_size, num_of_vertices, avg_degree;

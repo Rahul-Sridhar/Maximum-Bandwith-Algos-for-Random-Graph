@@ -78,7 +78,6 @@ int main()
     {
         cout<<path[j]<<" ";
     }
-    cout<<endl;
 	return 0;
 }
 

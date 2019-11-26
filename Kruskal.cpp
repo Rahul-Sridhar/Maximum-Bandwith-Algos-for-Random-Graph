@@ -155,7 +155,7 @@ vector<int> Kruskal::make_mst(int s, int t)
                 dad[v]=u;
             }*/
             //cout<<"i am here"<<endl;
-            /*cout<<"("<<u<<")"<<"("<<v<<")"<<curr_edge[0]<<"("<<curr_edge[1]<<")"<<"("<<curr_edge[2]<<")"<<" ";*/
+            //cout<<"("<<u<<")"<<"("<<v<<")"<<curr_edge[0]<<"("<<curr_edge[1]<<")"<<"("<<curr_edge[2]<<")"<<" ";
             umap[u].push_back(v);
             umap[v].push_back(u);
             merge_vertices_to_a_set(r1, r2);
@@ -189,25 +189,34 @@ vector<int> Kruskal::reconstruct_kruskal_with_heap(int s, int t, unordered_map<i
     cout<<"cool"<<endl;*/
     path.push_back(s);
     //int curr_vertex=s;
-    /*for(int i=0; i<graph.size(); i++)
-    {
-        for(int j=0; j<graph[i].size(); j++)
-        {
-            cout<<"("<<i<<")"<<"("<<graph[i][j].first<<")"<<graph[i][j].second<<" ";
-        }
-        cout<<endl;
-    }*/
+
     vector<int> visited(num_of_vertices, -1);
     visited[s]=1;
     vector<int> ans1=dfs(s, t, umap, path, visited);
     int value=INT_MAX;
-    cout<<endl;
-    /*for(int i=0; i<ans1.size()-1; i++)
+    /*for(int i=0; i<graph.size(); i++)
     {
-        cout<<ans1[i]<<" "<<ans1[i+1]<<" "<<graph[ans1[i]][ans1[i+1]].second<<endl;
-        value=min(value, graph[ans1[i]][ans1[i+1]].second);
+        cout << i << ": ";
+        for(int j=0; j<graph[i].size(); j++)
+        {
+            cout<<"("<<graph[i][j].first<<")"<<graph[i][j].second<<" ";
+        }
+        cout<<endl;
     }
-    cout<<value<<endl;*/
+    cout<<endl;*/
+    for(int i=0; i<ans1.size()-1; i++)
+    {
+        int a=ans1[i], b=ans1[i+1];
+        for(int j=0; j<graph[a].size(); j++)
+        {
+            if(graph[a][j].first==b)
+            {
+                value=min(value, graph[a][j].second);
+                break;
+            }
+        }
+    }
+    cout<<value<<endl;
     return ans1;
     /*while(true)
     {
