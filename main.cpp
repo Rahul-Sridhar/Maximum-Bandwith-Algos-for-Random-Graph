@@ -8,10 +8,29 @@ using namespace std;
 #include "Max_BW_Path_with_heap.hpp"
 #include "Kruskal.hpp"
 
+class RedirectStdOutput {
+    public:
+        RedirectStdOutput(std::ofstream& file)
+            : _psbuf{file.rdbuf()}, _backup{std::cout.rdbuf()}
+        {
+            std::cout.rdbuf(_psbuf);
+        }
+
+        ~RedirectStdOutput() {
+            std::cout.rdbuf(_backup);
+        }
+
+    private:
+        std::streambuf* _psbuf;
+        std::streambuf* _backup;
+};
+
 int main()
 {
-	cout<<"***********CSCE 629 Course Project************"<<endl;
-	cout<<"**************Rahul Sridhar*******************"<<endl;
+	std::ofstream file ("output.txt");
+    RedirectStdOutput rso (file);
+	cout<<"********************CSCE 629 Course Project************"<<endl;
+	cout<<"***********************Rahul Sridhar*******************"<<endl;
 	int num_of_vertices=5000, avg_degree=6;
 	cout<<endl<<endl<<endl<<"Sparse Graph"<<endl<<endl<<endl;
 	for(int i=0; i<5; i++)
@@ -76,6 +95,7 @@ int main()
             elapsed_time_in_seconds = end_time - start_time;
             cout<<endl<<"Running Time: "<<elapsed_time_in_seconds.count()<<endl<<endl;
         }
+        delete g;
         cout<<endl<<endl<<endl;
     }
     cout<<endl<<endl<<endl;
@@ -146,6 +166,8 @@ int main()
             elapsed_time_in_seconds = end_time - start_time;
             cout<<endl<<"Running Time: "<<elapsed_time_in_seconds.count()<<endl<<endl;
         }
+        delete g;
+        cout<<"done";
         cout<<endl<<endl<<endl;
     }
 	return 0;
