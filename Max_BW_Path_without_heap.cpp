@@ -54,7 +54,7 @@ vector<int> Max_BW_Path_without_heap::modified_dijkstra_without_heap(int s, int 
             }
         }
     }
-    cout<<weights[t]<<endl;
+    cout<<"Bandwidth: "<<weights[t]<<endl;
     return reconstruct_max_bw_path_without_heap(t, dad);
 }
 

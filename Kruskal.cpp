@@ -4,17 +4,26 @@ Kruskal::Kruskal(vector<vector<pair<int, int> > > g, int num_vertices, int degre
 {
     num_of_vertices=num_vertices;
     avg_degree=degree;
+    //try {
     rnk.resize(g.size());
     parent.resize(g.size());
+    /*} catch (std::bad_alloc &ba) {
+        std::cout << "bad_alloc caught: " << ba.what() << '\n';
+    }*/
     int n = (avg_degree*num_of_vertices)/2;
     for (int i = 0; i < n; i++)
     {
+        //try {
         heap.push_back({});
+        /*} catch (std::bad_alloc &ba) {
+            cout << "Gotcha ============" << endl;
+        }*/
     }
     graph=g;
     max_heap_size=(avg_degree*num_of_vertices)/2;
     curr_heap_size=-1;
     edges=edges_of_graph;
+    //cout << "Returning from Constructor" << endl;
 }
 
 vector<int> Kruskal::maximum()
@@ -148,7 +157,6 @@ vector<int> Kruskal::make_mst(int s, int t)
             merge_vertices_to_a_set(r1, r2);
         }
     }
-    cout<<endl;
     return reconstruct_kruskal_with_heap(s, t, umap);
 }
 
@@ -158,11 +166,11 @@ vector<int> Kruskal::reconstruct_kruskal_with_heap(int s, int t, unordered_map<i
     path.push_back(s);
     vector<int> visited(num_of_vertices, -1);
     visited[s]=1;
-    path=dfs(s, t, umap, path, visited);
+    vector<int> ans=dfs(s, t, umap, path, visited);
     int value=INT_MAX;
-    for(int i=0; i<path.size()-1; i++)
+    for(int i=0; i<ans.size()-1; i++)
     {
-        int u=path[i], v=path[i+1];
+        int u=ans[i], v=ans[i+1];
         for(int j=0; j<graph[u].size(); j++)
         {
             if(graph[u][j].first==v)
@@ -172,8 +180,8 @@ vector<int> Kruskal::reconstruct_kruskal_with_heap(int s, int t, unordered_map<i
             }
         }
     }
-    cout<<value<<endl;
-    return path;
+    cout<<"Bandwidth: "<<value<<endl;
+    return ans;
 }
 
 vector<int> Kruskal::dfs(int vertex, int t, unordered_map<int, vector<int>> umap, vector<int> ans, vector<int>& visited)
@@ -198,9 +206,3 @@ vector<int> Kruskal::dfs(int vertex, int t, unordered_map<int, vector<int>> umap
     }
     return {};
 }
-
-
-
-
-
-

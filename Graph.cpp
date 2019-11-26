@@ -1,4 +1,5 @@
 #include "Graph.hpp"
+#define WEIGHT_MAX 10000000
 
 using namespace std;
 
@@ -14,36 +15,36 @@ void Graph::make_connected()
 	vector<int> A(num_of_vertices, 0);
 	for(int i=0; i<num_of_vertices; i++)
 	{
-		A[i]=i+1;
+		A[i]=i;
 	}
 	random_shuffle(A.begin(), A.end());
 	srand(time(0));
 	for(int i=0; i<num_of_vertices; i++)
 	{
-		int w=rand()%100+1;
+		int w=rand()%WEIGHT_MAX+1;
 		if(i==graph.size()-1)
 		{
 			vector<int> entry_edges;
 			entry_edges.push_back(w);
-			entry_edges.push_back(i);
-			entry_edges.push_back(0);
+			entry_edges.push_back(A[i]);
+			entry_edges.push_back(A[0]);
 			edges.push_back(entry_edges);
-			graph[i].push_back(make_pair(0, w));
-			graph[0].push_back(make_pair(i, w));
-			uset.insert(i*10000+(0));
-			uset.insert(0*10000+i);
+			graph[A[i]].push_back(make_pair(A[0], w));
+			graph[A[0]].push_back(make_pair(A[i], w));
+			uset.insert(A[i]*10000+(A[0]));
+			uset.insert(A[0]*10000+A[i]);
 		}
 		else
 		{
 			vector<int> entry_edges;
 			entry_edges.push_back(w);
-			entry_edges.push_back(i);
-			entry_edges.push_back(i+1);
+			entry_edges.push_back(A[i]);
+			entry_edges.push_back(A[i+1]);
 			edges.push_back(entry_edges);
-			graph[i].push_back(make_pair(i+1, w));
-			graph[i+1].push_back(make_pair(i, w));
-			uset.insert(i*10000+(i+1));
-			uset.insert((i+1)*10000+(i));
+			graph[A[i]].push_back(make_pair(A[i+1], w));
+			graph[A[i+1]].push_back(make_pair(A[i], w));
+			uset.insert(A[i]*10000+(A[i+1]));
+			uset.insert((A[i+1])*10000+(A[i]));
 		}
 
 	}
@@ -65,7 +66,7 @@ void Graph::remaining_edges_sparse(int num_of_remaining_edges)
 		{
 			continue;
 		}
-        int w=rand()%100+1;
+        int w=rand()%WEIGHT_MAX+1;
         vector<int> entry_edges;
         entry_edges.push_back(w);
         entry_edges.push_back(a);
@@ -94,7 +95,7 @@ void Graph::remaining_edges_dense(int num_of_remaining_edges)
             {
                 continue;
             }
-            int w=rand()%100+1;
+            int w=rand()%WEIGHT_MAX+1;
             vector<int> entry_edges;
             entry_edges.push_back(w);
             entry_edges.push_back(i);
